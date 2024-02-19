@@ -34,4 +34,4 @@ jobs:
             output/WSA_*.zip
             output/WSA_*.7z
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
