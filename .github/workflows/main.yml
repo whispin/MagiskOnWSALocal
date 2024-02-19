@@ -1,0 +1,37 @@
+name: Release
+on:
+  release:
+    types:
+      - published
+  watch:
+    types: [started]
+permissions:
+  contents: write
+  repository-projects: write
+  actions: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install depencies
+        run: ./scripts/install_deps.sh
+      - name: Build x64 zip
+        run: ./scripts/build.sh --arch x64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format zip
+      - name: Build x64 7zip
+        run: ./scripts/build.sh --arch x64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format 7z
+      - name: Build arm64 zip
+        run: ./scripts/build.sh --arch arm64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format zip
+      - name: Build arm64 7zip
+        run: ./scripts/build.sh --arch arm64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format 7z
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            output/WSA_*.zip
+            output/WSA_*.7z
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
