@@ -39,7 +39,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.RELEASE_TOKEN }}
-          file: output/WSA_*.zip
+          file: output/WSA_2311.40000.5.0_x64_Release-Nightly-with-magisk-27.0(27000)-stable-MindTheGapps-13.0-RemovedAmazon.zip
           asset_name: wsa.zip
           tag: ${{ github.ref }}
           overwrite: true
