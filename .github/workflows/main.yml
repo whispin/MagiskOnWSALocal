@@ -20,18 +20,27 @@ jobs:
         run: ./scripts/install_deps.sh
       - name: Build x64 zip
         run: ./scripts/build.sh --arch x64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format zip
-      - name: Build x64 7zip
-        run: ./scripts/build.sh --arch x64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format 7z
+    #- name: Build x64 7zip
+       # run: ./scripts/build.sh --arch x64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format 7z
     #  - name: Build arm64 zip
     #    run: ./scripts/build.sh --arch arm64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format zip
     #  - name: Build arm64 7zip
     #    run: ./scripts/build.sh --arch arm64 --release-type retail --root-sol magisk --gapps-brand MindTheGapps --remove-amazon --compress --magisk-ver stable --compress-format 7z
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+    #   - name: Release
+    #    uses: softprops/action-gh-release@v1
+    #    if: startsWith(github.ref, 'refs/tags/')
+    #    with:
+    #      files: |
+    #        output/WSA_*.zip
+    #        output/WSA_*.7z
+    #    env:
+    #      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          files: |
-            output/WSA_*.zip
-            output/WSA_*.7z
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          repo_token: ${{ secrets.RELEASE_TOKEN }}
+          file: output/WSA_*.zip
+          asset_name: wsa.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "This is my release text"
